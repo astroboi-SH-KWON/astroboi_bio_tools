@@ -40,7 +40,7 @@ class ToolUtils:
                         if cnt == max_row:
                             break
 
-    def read_csv_ignore_N_line(self, path, deli_str=",", n_line=1):
+    def read_tsv_ignore_N_line(self, path, n_line=1, deli_str="\t"):
         result_list = []
         with open(path, "r") as f:
             for ignr_line in range(n_line):
