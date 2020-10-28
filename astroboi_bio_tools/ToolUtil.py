@@ -1,6 +1,7 @@
 import glob
 from Bio import SeqIO
 import openpyxl
+import os
 
 
 class ToolUtils:
@@ -96,3 +97,30 @@ class ToolUtils:
     def read_file_by_biopython(self, path, f_format):
         seq_record = SeqIO.read(path, f_format)
         return str(seq_record.seq).upper(), str(seq_record.seq.complement()).upper()
+    """
+    :param
+        init_split_file = {'big_file_path': WORK_DIR + FASTQ + str(fn_nm) + FASTQ_EXT
+                                , 'num_row': 4000000
+                                , 'splited_files_dir': WORK_DIR + FASTQ + str(fn_nm) + "/"
+                                , 'output_file_nm': only_file_name_without_ext
+                                , 'output_file_ext': '.fastq'
+                               }
+    """
+    def split_big_file_by_row(self, init):
+        big_file_path = init['big_file_path']
+        num_row = init['num_row']
+        splited_files_dir = init['splited_files_dir']
+        output_file_nm = init['output_file_nm']
+        output_file_ext = init['output_file_ext']
+
+        os.makedirs(splited_files_dir, exist_ok=True)
+
+        with open(big_file_path) as fin:
+            fout = open('{}/{}_{}{}'.format(splited_files_dir, output_file_nm, '0', output_file_ext), "w")
+            for i, line in enumerate(fin):
+                fout.write(line)
+                if (i + 1) % num_row == 0:
+                    fout.close()
+                    fout = open('{}/{}_{}{}'.format(splited_files_dir, output_file_nm, str(i // num_row + 1), output_file_ext), "w")
+
+            fout.close()
