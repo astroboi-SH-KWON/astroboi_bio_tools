@@ -97,6 +97,7 @@ class ToolUtils:
     def read_file_by_biopython(self, path, f_format):
         seq_record = SeqIO.read(path, f_format)
         return str(seq_record.seq).upper(), str(seq_record.seq.complement()).upper()
+
     """
     :param
         init_split_file = {'big_file_path': WORK_DIR + FASTQ + str(fn_nm) + FASTQ_EXT
