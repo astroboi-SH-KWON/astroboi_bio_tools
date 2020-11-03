@@ -19,6 +19,7 @@ if SYSTEM_NM == 'Linux':
     DFAM_ANNO = "./input/hg38_dfam.hits"
 else:
     # DEV
+    WORK_DIR = "D:/000_WORK/Ramu_JangHyeWon/20201103/WORK_DIR/"
     REF_DIR = "D:/000_WORK/000_reference_path/human/hg38/Splited/"
     DFAM_ANNO = "D:/000_WORK/ParkJiHye/20200914/hg38_dfam.hits"
 
