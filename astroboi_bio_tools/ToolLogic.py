@@ -64,3 +64,20 @@ class ToolLogics:
             return self.match(i + 1, seq_str, rule_str)
         else:
             return False
+
+    """
+    get_matched_seq_idx_list : matched sequence index from long strings
+    :param
+        i : index of rule_str in long_seq
+        long_seq : targeted DNA/RNA sequence 
+        rule_str : rules with "ACGTU", "N", "R",...
+    :return
+        index list
+    """
+    def get_matched_seq_idx_list(self, long_seq, rule_str):
+        idx_list = []
+        len_rule = len(rule_str)
+        for i in range(len(long_seq) - len_rule):
+            if self.match(0, long_seq[i: i + len_rule], rule_str):
+                idx_list.append(i)
+        return idx_list
