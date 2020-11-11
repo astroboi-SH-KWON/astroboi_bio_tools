@@ -25,21 +25,21 @@ class ToolLogics:
     checkSeqByChar : match sequences by char
     :param
         seq_char :
-        target_char : 
+        rule_char : 
     :return
         boolean
     """
-    def checkSeqByChar(self, seq_char, target_char):
+    def checkSeqByChar(self, seq_char, rule_char):
         flag = False
-        if target_char == 'N':
+        if rule_char == 'N':
             return True
-        elif target_char in 'ACGTU':
-            if seq_char == target_char:
+        elif rule_char in 'ACGTU':
+            if seq_char == rule_char:
                 return True
-        elif target_char == 'R':
+        elif rule_char == 'R':
             if seq_char in 'AG':
                 return True
-        elif target_char == 'Y':
+        elif rule_char == 'Y':
             if seq_char in 'CT':
                 return True
         """
