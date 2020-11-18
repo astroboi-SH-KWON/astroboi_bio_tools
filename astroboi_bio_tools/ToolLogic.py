@@ -99,7 +99,7 @@ class ToolLogics:
       |..|..|
     --PEEKSAV---
     Score=16
-    <BLANKLINE>
+    <BLANKLINE>  
     """
     def get_pairwise2_localds_result(self, asequence, bsequence, matrx=blosum62, gap_open_penalty=10, extension_penalty=1):
         alignments = pairwise2.align.localds(asequence.upper().replace(" ", ""), bsequence.upper().replace(" ", ""),
