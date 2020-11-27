@@ -2,6 +2,7 @@ import glob
 from Bio import SeqIO
 import openpyxl
 import os
+import pandas as pd
 
 
 class ToolUtils:
@@ -125,3 +126,17 @@ class ToolUtils:
                     fout = open('{}/{}_{}{}'.format(splited_files_dir, output_file_nm, str(i // num_row + 1), output_file_ext), "w")
 
             fout.close()
+
+    # conda install -c anaconda xlrd
+    def get_sheet_names(self, path):
+        df = pd.read_excel(path, None)
+        return [k for k in df.keys()]
+
+    """
+    len_df = len(df[df.columns[0]])
+
+        for i in range(len_df):
+            rg_seq = df.loc[i][2]  # row: i, column: 2
+    """
+    def read_excel_to_df(self, path, sheet_name='Sheet1'):
+        return pd.read_excel(path, sheet_name=sheet_name)
