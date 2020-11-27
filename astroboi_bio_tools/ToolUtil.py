@@ -133,6 +133,8 @@ class ToolUtils:
         return [k for k in df.keys()]
 
     """
+    :return df
+    
     len_df = len(df[df.columns[0]])
 
         for i in range(len_df):
