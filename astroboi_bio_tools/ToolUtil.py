@@ -133,6 +133,10 @@ class ToolUtils:
         return [k for k in df.keys()]
 
     """
+    :param
+        header=0 : default, first row is the title of each columns
+        header=None : no title with columns
+        
     :return df
     
     len_df = len(df[df.columns[0]])
@@ -140,5 +144,5 @@ class ToolUtils:
         for i in range(len_df):
             rg_seq = df.loc[i][2]  # row: i, column: 2
     """
-    def read_excel_to_df(self, path, sheet_name='Sheet1'):
-        return pd.read_excel(path, sheet_name=sheet_name)
+    def read_excel_to_df(self, path, sheet_name='Sheet1', header=0):
+        return pd.read_excel(path, sheet_name=sheet_name, header=header)
