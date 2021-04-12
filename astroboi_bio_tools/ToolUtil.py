@@ -146,3 +146,17 @@ class ToolUtils:
     """
     def read_excel_to_df(self, path, sheet_name='Sheet1', header=0):
         return pd.read_excel(path, sheet_name=sheet_name, header=header)
+
+    """
+    # split big fastq file if it suffers out of memory
+    :param
+        path : joined fastq file path
+    
+    :return
+        ['TATATATCTTGTGGAAAGGACGAAACACCGCCAATTCAGTATAGTAGAT.....CTAGATCTCTACTCTACCACTTGTACTTCAGCGGTCAGCTTACTCGACTTAA'
+        , 'TATATATCTTGTGGAAAGGACGAAACACCGCACACGCCTGCCTTTATT.....CTACTCTACCACTTGTACTTCAGCGGTCAGCTTACTCGACTTAA'
+        , ...]
+    """
+    def make_fastq_file_to_list(self, path):
+        temp = list(SeqIO.parse(path, "fastq"))
+        return [str(temp[k].seq) for k in range(len(temp))]
