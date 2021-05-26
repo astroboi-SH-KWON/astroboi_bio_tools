@@ -19,9 +19,11 @@ class ToolUtils:
         ['target dir/file_name.target ext', 'target dir/file_name.target ext' ...]
     """
     def get_files_from_dir(self, path):
+        print("st : get_files_from_dir :", path)
         return glob.glob(path)
 
     def split_big_file_to_files(self, big_f, num_split, max_row):
+        print("st : split_big_file_to_files :", big_f)
         # filter out unapproved chromosome
         file_nm_arr = ['chrX', 'chrY']
         for f_num in range(1, 23):
@@ -41,8 +43,10 @@ class ToolUtils:
                         out_f.write(tmp_line)
                         if cnt == max_row:
                             break
+        print("DONE : split_big_file_to_files :", big_f)
 
     def read_tsv_ignore_N_line(self, path, n_line=1, deli_str="\t"):
+        print("st : read_tsv_ignore_N_line :", n_line, "path :", path)
         result_list = []
         with open(path, "r") as f:
             for ignr_line in range(n_line):
@@ -54,6 +58,7 @@ class ToolUtils:
                     break
 
                 result_list.append(tmp_line.split(deli_str))
+        print("DONE : read_tsv_ignore_N_line :", n_line, "path :", path)
         return result_list
 
     def make_excel_row(self, sheet, row, data_arr, col=1):
@@ -61,7 +66,8 @@ class ToolUtils:
             sheet.cell(row=row, column=(col + idx), value=data_arr[idx])
 
     def make_excel(self, path, header, data_list, strt_idx=0):
-        print("start make_excel :", path)
+        print("st : make_excel :", path)
+        print("header :", header)
         workbook = openpyxl.Workbook()
         sheet = workbook.active
 
@@ -73,10 +79,11 @@ class ToolUtils:
             self.make_excel_row(sheet, row, data_arr[strt_idx:])
 
         workbook.save(filename=path + self.ext_xlsx)
-        print("end make_excel :", path, "\n")
+        print("DONE : make_excel :", path, "\n")
 
     def make_tsv(self, path, header, data_list, strt_idx=0, deli='\t'):
-        print("start make_tsv :", path)
+        print("st : make_tsv :", path)
+        print("header :", header)
         with open(path, 'w') as f:
             tmp_head = ''
             for head in header[strt_idx:]:
@@ -88,7 +95,7 @@ class ToolUtils:
                 for row_val in data_arr[strt_idx:]:
                     tmp_row += (str(row_val) + deli)
                 f.write(tmp_row[:-1] + "\n")
-        print("end make_tsv :", path, "\n")
+        print("DONE : make_tsv :", path, "\n")
 
     """
     :param
@@ -96,6 +103,7 @@ class ToolUtils:
         f_format : file format (ex : fasta, genbank...)
     """
     def read_file_by_biopython(self, path, f_format):
+        print("st : read_file_by_biopython, file_form :", f_format, "path :",path)
         seq_record = SeqIO.read(path, f_format)
         return str(seq_record.seq).upper(), str(seq_record.seq.complement()).upper()
 
@@ -109,6 +117,7 @@ class ToolUtils:
                                }
     """
     def split_big_file_by_row(self, init):
+        print("st : split_big_file_by_row :\n", init)
         big_file_path = init['big_file_path']
         num_row = init['num_row']
         splited_files_dir = init['splited_files_dir']
@@ -126,6 +135,7 @@ class ToolUtils:
                     fout = open('{}/{}_{}{}'.format(splited_files_dir, output_file_nm, str(i // num_row + 1), output_file_ext), "w")
 
             fout.close()
+        print("DONE : split_big_file_by_row :\n", init, "\n")
 
     # conda install -c anaconda xlrd
     def get_sheet_names(self, path):
@@ -145,6 +155,7 @@ class ToolUtils:
             rg_seq = df.loc[i][2]  # row: i, column: 2
     """
     def read_excel_to_df(self, path, sheet_name='Sheet1', header=0):
+        print("st : read_excel_to_df :", path)
         return pd.read_excel(path, sheet_name=sheet_name, header=header)
 
     """
@@ -158,5 +169,6 @@ class ToolUtils:
         , ...]
     """
     def make_fastq_file_to_list(self, path):
+        print("st : make_fastq_file_to_list :", path)
         temp = list(SeqIO.parse(path, "fastq"))
         return [str(temp[k].seq) for k in range(len(temp))]
