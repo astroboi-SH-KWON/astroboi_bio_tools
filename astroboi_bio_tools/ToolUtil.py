@@ -20,7 +20,10 @@ class ToolUtils:
     """
     def get_files_from_dir(self, path):
         print("st : get_files_from_dir :", path)
-        return glob.glob(path)
+        try:
+            return glob.glob(path)
+        except:
+            raise Exception
 
     def split_big_file_to_files(self, big_f, num_split, max_row):
         print("st : split_big_file_to_files :", big_f)
@@ -29,35 +32,41 @@ class ToolUtils:
         for f_num in range(1, 23):
             file_nm_arr.append("chr" + str(f_num))
 
-        with open(big_f) as input_f:
-            for num in range(num_split):
-                with open(big_f + str(num), 'w') as out_f:
-                    cnt = 0
-                    for tmp_line in input_f:
+        try:
+            with open(big_f) as input_f:
+                for num in range(num_split):
+                    with open(big_f + str(num), 'w') as out_f:
+                        cnt = 0
+                        for tmp_line in input_f:
 
-                        # filter out unapproved chromosome
-                        if tmp_line.split('\t')[0] not in file_nm_arr:
-                            continue
+                            # filter out unapproved chromosome
+                            if tmp_line.split('\t')[0] not in file_nm_arr:
+                                continue
 
-                        cnt += 1
-                        out_f.write(tmp_line)
-                        if cnt == max_row:
-                            break
+                            cnt += 1
+                            out_f.write(tmp_line)
+                            if cnt == max_row:
+                                break
+        except:
+            raise Exception
         print("DONE : split_big_file_to_files :", big_f)
 
     def read_tsv_ignore_N_line(self, path, n_line=1, deli_str="\t"):
         print("st : read_tsv_ignore_N_line :", n_line, "path :", path)
         result_list = []
-        with open(path, "r") as f:
-            for ignr_line in range(n_line):
-                header = f.readline()
-                print(header)
-            while True:
-                tmp_line = f.readline().replace("\n", "")
-                if tmp_line == '':
-                    break
+        try:
+            with open(path, "r") as f:
+                for ignr_line in range(n_line):
+                    header = f.readline()
+                    print(header)
+                while True:
+                    tmp_line = f.readline().replace("\n", "")
+                    if tmp_line == '':
+                        break
 
-                result_list.append(tmp_line.split(deli_str))
+                    result_list.append(tmp_line.split(deli_str))
+        except:
+            raise Exception
         print("DONE : read_tsv_ignore_N_line :", n_line, "path :", path)
         return result_list
 
@@ -103,9 +112,12 @@ class ToolUtils:
         f_format : file format (ex : fasta, genbank...)
     """
     def read_file_by_biopython(self, path, f_format):
-        print("st : read_file_by_biopython, file_form :", f_format, "path :",path)
-        seq_record = SeqIO.read(path, f_format)
-        return str(seq_record.seq).upper(), str(seq_record.seq.complement()).upper()
+        print("st : read_file_by_biopython, file_form :", f_format, "path :", path)
+        try:
+            seq_record = SeqIO.read(path, f_format)
+            return str(seq_record.seq).upper(), str(seq_record.seq.complement()).upper()
+        except:
+            raise Exception
 
     """
     :param
@@ -126,21 +138,26 @@ class ToolUtils:
 
         os.makedirs(splited_files_dir, exist_ok=True)
 
-        with open(big_file_path) as fin:
-            fout = open('{}/{}_{}{}'.format(splited_files_dir, output_file_nm, '0', output_file_ext), "w")
-            for i, line in enumerate(fin):
-                fout.write(line)
-                if (i + 1) % num_row == 0:
-                    fout.close()
-                    fout = open('{}/{}_{}{}'.format(splited_files_dir, output_file_nm, str(i // num_row + 1), output_file_ext), "w")
-
-            fout.close()
+        try:
+            with open(big_file_path) as fin:
+                fout = open('{}/{}_{}{}'.format(splited_files_dir, output_file_nm, '0', output_file_ext), "w")
+                for i, line in enumerate(fin):
+                    fout.write(line)
+                    if (i + 1) % num_row == 0:
+                        fout.close()
+                        fout = open('{}/{}_{}{}'.format(splited_files_dir, output_file_nm, str(i // num_row + 1), output_file_ext), "w")
+                fout.close()
+        except:
+            raise Exception
         print("DONE : split_big_file_by_row :\n", init, "\n")
 
     # conda install -c anaconda xlrd
     def get_sheet_names(self, path):
-        df = pd.read_excel(path, None)
-        return [k for k in df.keys()]
+        try:
+            df = pd.read_excel(path, None)
+            return [k for k in df.keys()]
+        except:
+            raise Exception
 
     """
     :param
@@ -156,7 +173,10 @@ class ToolUtils:
     """
     def read_excel_to_df(self, path, sheet_name='Sheet1', header=0):
         print("st : read_excel_to_df :", path)
-        return pd.read_excel(path, sheet_name=sheet_name, header=header)
+        try:
+            return pd.read_excel(path, sheet_name=sheet_name, header=header)
+        except:
+            raise Exception
 
     """
     # split big fastq file if it suffers out of memory
@@ -170,5 +190,8 @@ class ToolUtils:
     """
     def make_fastq_file_to_list(self, path):
         print("st : make_fastq_file_to_list :", path)
-        temp = list(SeqIO.parse(path, "fastq"))
-        return [str(temp[k].seq) for k in range(len(temp))]
+        try:
+            temp = list(SeqIO.parse(path, "fastq"))
+            return [str(temp[k].seq) for k in range(len(temp))]
+        except:
+            raise Exception
